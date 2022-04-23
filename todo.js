@@ -5,8 +5,8 @@ const toDo=express.Router();
 
 const TODO=new mongoose.model("ToDo",schema);
 
-toDo.get("/",async(req,res)=>{
-await TODO.find().limit(1).select({
+toDo.get("/",(req,res)=>{
+ TODO.find().limit(1).select({
     date:0}).exec((err,data)=>{
         if(err)
         {
@@ -23,8 +23,26 @@ await TODO.find().limit(1).select({
         }
     });
 });
-
+toDo.get("/active", async (req,res)=>{
+    const t=new TODO();
+   const data= await t.findActive();
+   res.status(200).json({
+    message:"Success",
+    data:data
+})
+  
+ });
+ toDo.get("/inactive", async (req,res)=>{
+   
+   const data= await TODO.findInActive().byLeaugue();
+   res.status(200).json({
+    message:"Success",
+    data:data
+ });
+ });
+ 
 toDo.get("/:id",(req,res)=>{
+    //select, limit, exec all are query helpers which are built in
      TODO.find({_id:req.params.id}).limit(1).select({
         date:0}).exec((err,data)=>{
             if(err)
@@ -42,6 +60,7 @@ toDo.get("/:id",(req,res)=>{
             }
         });
 });
+
 
 toDo.post("/",(req,res)=>{
 const t=new TODO(req.body);

@@ -20,5 +20,25 @@ const schema=mongoose.Schema({
     }
 });
 
+schema.methods={
+    findActive: ()=>{
+        return mongoose.model("ToDo").find({status:"active"}).clone().catch(err=>console.log(err));
+    },
+}
+
+schema.statics={
+    findInActive:function()
+    {
+        return this.find({status:"inactive"});
+    }
+}
+
+schema.query={
+    byLeaugue: function()
+    {
+        return this.find({title:"Premier League"})
+    }
+}
+
 
 module.exports=schema;
