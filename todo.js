@@ -24,8 +24,8 @@ await TODO.find().limit(1).select({
     });
 });
 
-toDo.get("/:id",async(req,res)=>{
-    await TODO.find({_id:req.params.id}).limit(1).select({
+toDo.get("/:id",(req,res)=>{
+     TODO.find({_id:req.params.id}).limit(1).select({
         date:0}).exec((err,data)=>{
             if(err)
             {
@@ -43,10 +43,10 @@ toDo.get("/:id",async(req,res)=>{
         });
 });
 
-toDo.post("/",async(req,res)=>{
+toDo.post("/",(req,res)=>{
 const t=new TODO(req.body);
 
-await t.save((err)=>{
+ t.save((err)=>{
     if(err)
     {
         res.status(500).json({
@@ -63,7 +63,7 @@ await t.save((err)=>{
 });
 
 toDo.post("/all",async(req,res)=>{
-await TODO.insertMany(req.body,(err)=>{
+ TODO.insertMany(req.body,(err)=>{
     if(err)
     {
         res.status(500).json({
@@ -79,8 +79,8 @@ await TODO.insertMany(req.body,(err)=>{
 });
 });
 
-toDo.put("/:id",async(req,res)=>{
-await TODO.updateOne(
+toDo.put("/:id",(req,res)=>{
+ TODO.updateOne(
     {_id:req.params.id},
     {
     $set:{
@@ -103,8 +103,8 @@ await TODO.updateOne(
 });
 });
 
-toDo.delete("/:id",async(req,res)=>{
-await TODO.deleteOne({_id:req.params.id},(err,data)=>{
+toDo.delete("/:id",(req,res)=>{
+     TODO.deleteOne({_id:req.params.id},(err,data)=>{
     if(err)
     {
         res.status(500).json({
