@@ -1,11 +1,12 @@
 const express=require("express");
 const mongoose=require("mongoose");
 const schema=require("./schema");
+const checkToken=require("./checkToken");
 const toDo=express.Router();
 
 const TODO=new mongoose.model("ToDo",schema);
 
-toDo.get("/",(req,res)=>{
+toDo.get("/",checkToken,(req,res)=>{
  TODO.find().limit(1).select({
     date:0}).exec((err,data)=>{
         if(err)
