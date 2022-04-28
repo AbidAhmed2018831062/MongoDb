@@ -7,7 +7,7 @@ const toDo=express.Router();
 const TODO=new mongoose.model("ToDo",schema);
 
 toDo.get("/",checkToken,(req,res)=>{
- TODO.find().limit(1).select({
+ TODO.find().populate("user").limit(1).select({
     date:0}).exec((err,data)=>{
         if(err)
         {
@@ -63,8 +63,12 @@ toDo.get("/:id",(req,res)=>{
 });
 
 
-toDo.post("/",(req,res)=>{
-const t=new TODO(req.body);
+toDo.post("/",checkToken,(req,res)=>{
+console.log(req._id);
+const t=new TODO({
+    ...req.body,
+   user: req._id
+});
 
  t.save((err)=>{
     if(err)
