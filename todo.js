@@ -63,8 +63,9 @@ toDo.get("/:id",(req,res)=>{
 });
 
 
-toDo.post("/",checkToken,(req,res)=>{
+toDo.post("/",checkToken,async (req,res)=>{
 console.log(req._id);
+
 const t=new TODO({
     ...req.body,
    user: req._id
@@ -79,9 +80,24 @@ const t=new TODO({
     }
     else
     {
-        res.status(200).json({
-            message:"Successful"
-        })   
+     mongoose.model("User").updateOne({_id:req._id},
+            {
+                $push:{
+                    todo:t._id
+                }
+            },(err)=>{
+                if(err)
+                {
+                    res.status(500).json({
+                        error:"There was an error"
+                    })
+                }
+                else{
+                res.status(200).json({
+                    message:"Successful"
+                }) 
+            }
+            })  
     }
 });
 });

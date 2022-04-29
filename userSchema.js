@@ -14,6 +14,12 @@ const userSchema=mongoose.Schema({
         type:String,
         required:true
     },
+    todo:[
+        {
+            type:mongoose.Types.ObjectId,
+            ref:"ToDo"
+        }
+    ],
     date:{
         type:Date,
         default:Date.now,
